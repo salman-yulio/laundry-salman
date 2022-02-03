@@ -67,7 +67,7 @@ class OutletController extends Controller
      */
     public function edit(Outlet $outlet)
     {
-        //
+
     }
 
     /**
@@ -79,7 +79,7 @@ class OutletController extends Controller
      */
     public function update(Request $request, Outlet $outlet)
     {
-        //
+
     }
 
     /**

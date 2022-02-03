@@ -106,6 +106,26 @@
                         </div>
 
                             <div>
+                                <table id="tb-outlet" class="table table-striped table-md">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Alamat</th>
+                                        <th scope="col">Telepon</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($outlet as $o)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $o->nama }}</td>
+                                            <td>{{ $o->alamat }}</td>
+                                            <td>{{ $o->telepon }}</td>
+                                        </tr>
+                                      @endforeach
+                                    </tbody>
+                                </table>
                                 </div>
                     </div>
 
