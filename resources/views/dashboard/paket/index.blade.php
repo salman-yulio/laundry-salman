@@ -224,6 +224,11 @@
                                                   </div>
                                                 </div>
                                               </div>
+                                          <form action="{{ url('dashboard/paket/'.$p->id) }}" method="post" class="d-inline">
+                                              @csrf
+                                              <input type="hidden" name="_method" value="DELETE">
+                                              <button class="btn btn-danger border-0" onclick="return confirm('Anda Yakin?')">Delete</button>
+                                          </form>
                                             </td>
                                         </tr>
                                       @endforeach
