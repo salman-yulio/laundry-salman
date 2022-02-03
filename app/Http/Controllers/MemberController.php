@@ -46,7 +46,7 @@ class MemberController extends Controller
 
         Member::create($validatedData);
 
-        return redirect('/dashboard/member')->with('success', 'New Data has been added!');
+        return redirect('/dashboard/member')->with('success', 'Data baru telah ditambahkan!');
     }
 
     /**
@@ -68,7 +68,9 @@ class MemberController extends Controller
      */
     public function edit(Member $member)
     {
-
+        return view('dashboard.member.edit', [
+            'member' => $member
+        ]);
     }
 
     /**
@@ -87,6 +89,10 @@ class MemberController extends Controller
             'telepon' => 'required'
         ]);
 
+        Member::where('id', $member->id)
+            ->update($validatedData);
+
+        return redirect('/dashboard/member')->with('success', 'Data telah diubah!');
     }
 
     /**
