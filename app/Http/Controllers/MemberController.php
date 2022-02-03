@@ -68,9 +68,7 @@ class MemberController extends Controller
      */
     public function edit(Member $member)
     {
-        return view('dashboard.member.edit', [
-            'member' => $member
-        ]);
+
     }
 
     /**
@@ -89,10 +87,6 @@ class MemberController extends Controller
             'telepon' => 'required'
         ]);
 
-        Member::where('id', $member->id)
-            ->update($validatedData);
-
-        return redirect('/dashboard/member')->with('success', 'New Data has been added!');
     }
 
     /**
@@ -103,8 +97,6 @@ class MemberController extends Controller
      */
     public function destroy($id)
     {
-        $validatedData = Member::find($id);
-        $validatedData->delete();
-        return redirect('/dashboard/member');
+
     }
 }

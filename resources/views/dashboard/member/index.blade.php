@@ -119,6 +119,28 @@
                         </div>
 
                             <div>
+                                <table id="tb-member" class="table table-striped table-md">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Alamat</th>
+                                        <th scope="col">Jenis Kelamin</th>
+                                        <th scope="col">Telepon</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($member as $member)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $member->nama }}</td>
+                                            <td>{{ $member->alamat }}</td>
+                                            <td>{{ $member->jenis_kelamin }}</td>
+                                            <td>{{ $member->telepon }}</td>
+                                        </tr>
+                                      @endforeach
+                                    </tbody>
+                                </table>
                                 </div>
                     </div>
 
