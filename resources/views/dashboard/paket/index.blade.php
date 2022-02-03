@@ -128,6 +128,26 @@
                         </div>
 
                             <div>
+                                <table id="tb-paket" class="table table-striped table-md">
+                                    <thead>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Outlet</th>
+                                        <th scope="col">Jenis</th>
+                                        <th scope="col">Nama Paket</th>
+                                        <th scope="col">Harga</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($paket as $p)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $p->id_outlet }}</td>
+                                            <td>{{ $p->jenis }}</td>
+                                            <td>{{ $p->nama_paket }}</td>
+                                            <td>{{ $p->harga }}</td>
+                                        </tr>
+                                      @endforeach
+                                    </tbody>
+                                </table>
                                 </div>
                     </div>
 
