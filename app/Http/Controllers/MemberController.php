@@ -105,6 +105,6 @@ class MemberController extends Controller
     {
         $validatedData = Member::find($id);
         $validatedData->delete();
-        return redirect('/dashboard/member');
+        return redirect('/dashboard/member')->with('success', 'Data telah dihapus!');
     }
 }
