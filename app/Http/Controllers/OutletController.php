@@ -67,7 +67,9 @@ class OutletController extends Controller
      */
     public function edit(Outlet $outlet)
     {
-
+        return view('dashboard.outlet.edit', [
+            'outlet' => $outlet
+        ]);
     }
 
     /**
@@ -79,7 +81,16 @@ class OutletController extends Controller
      */
     public function update(Request $request, Outlet $outlet)
     {
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'alamat' => 'required',
+            'telepon' => 'required'
+        ]);
 
+        Outlet::where('id', $outlet->id)
+            ->update($validatedData);
+
+        return redirect('/dashboard/outlet')->with('success', 'Data telah diubah!');
     }
 
     /**
@@ -88,8 +99,8 @@ class OutletController extends Controller
      * @param  \App\Models\Outlet  $outlet
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Outlet $outlet)
+    public function destroy($id)
     {
-        //
+
     }
 }
