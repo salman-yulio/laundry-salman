@@ -101,6 +101,8 @@ class OutletController extends Controller
      */
     public function destroy($id)
     {
-
+        $validatedData = Outlet::find($id);
+        $validatedData->delete();
+        return redirect('/dashboard/outlet')->with('success', 'Data telah dihapus!');
     }
 }
