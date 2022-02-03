@@ -103,6 +103,8 @@ class MemberController extends Controller
      */
     public function destroy($id)
     {
-
+        $validatedData = Member::find($id);
+        $validatedData->delete();
+        return redirect('/dashboard/member');
     }
 }
