@@ -24,10 +24,18 @@ class LoginController extends Controller
 
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            if(Auth::user()->role == 'admin'){
+                return redirect()->route('a.dashboard');
+            }else if(Auth::user()->role == 'kasir'){
+                return redirect()->route('k.dashboard');
+            }else if(Auth::user()->role == 'owner'){
+                return redirect()->route('o.dashboard');
+            }
             return redirect()->intended('/dashboard');
         }
 
-        return back()->with('loginError', 'Login Failed!');
+        return back()->with('loginError', 'Username atau password salah');
     }
 
     public function logout()

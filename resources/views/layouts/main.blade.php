@@ -25,8 +25,14 @@
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
+            @if(auth()->user()->role == 'admin')
+                @include('layouts.sidebar-admin')
+            @elseif(auth()->user()->role == 'kasir')
+                @include('layouts.sidebar-kasir')
+            @elseif(auth()->user()->role == 'owner')
+                @include('layouts.sidebar-owner')
 
-            @include('layouts.sidebar')
+            @endif
 
           </div>
         </div>
@@ -47,6 +53,7 @@
       </div>
     </div>
 
+    <script src="/js/sweetalert.min.js"></script>
     <!-- jQuery -->
     <script src="{{ asset('assets') }}/vendors/jquery/dist/jquery.min.js"></script>
 

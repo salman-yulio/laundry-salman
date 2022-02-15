@@ -17,7 +17,7 @@ class CreateOutletTable extends Migration
             $table->id();
             $table->string('nama', 100);
             $table->text('alamat');
-            $table->string('telepon', 15);
+            $table->string('telepon', 20);
             $table->timestamps();
         });
     }

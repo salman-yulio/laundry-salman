@@ -42,7 +42,7 @@ class PaketController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'id_outlet' => 'required',
+            'outlet_id' => 'required',
             'jenis' => 'required',
             'nama_paket' => 'required',
             'harga' => 'required'
@@ -50,7 +50,7 @@ class PaketController extends Controller
 
         Paket::create($validatedData);
 
-        return redirect('/dashboard/paket')->with('success', 'Data baru telah ditambahkan!');
+        return redirect(request()->segment(1).'/paket')->with('success', 'Data baru telah ditambahkan!');
     }
 
     /**
@@ -87,7 +87,7 @@ class PaketController extends Controller
     public function update(Request $request, Paket $paket)
     {
         $validatedData = $request->validate([
-            'id_outlet' => 'required',
+            '' => 'required',
             'jenis' => 'required',
             'nama_paket' => 'required',
             'harga' => 'required'
@@ -96,7 +96,7 @@ class PaketController extends Controller
         Paket::where('id', $paket->id)
             ->update($validatedData);
 
-        return redirect('/dashboard/paket')->with('success', 'Data telah diubah!');
+        return redirect(request()->segment(1).'/paket')->with('success', 'Data telah diubah!');
     }
 
     /**
@@ -109,6 +109,6 @@ class PaketController extends Controller
     {
         $validatedData = Paket::find($id);
         $validatedData->delete();
-        return redirect('/dashboard/paket')->with('success', 'Data telah dihapus!');
+        return redirect(request()->segment(1).'/paket')->with('success', 'Data telah dihapus!');
     }
 }

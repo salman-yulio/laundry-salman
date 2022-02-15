@@ -46,7 +46,7 @@ class MemberController extends Controller
 
         Member::create($validatedData);
 
-        return redirect('/dashboard/member')->with('success', 'Data baru telah ditambahkan!');
+        return redirect(request()->segment(1).'/member')->with('success', 'Data baru telah ditambahkan!');
     }
 
     /**
@@ -92,7 +92,7 @@ class MemberController extends Controller
         Member::where('id', $member->id)
             ->update($validatedData);
 
-        return redirect('/dashboard/member')->with('success', 'Data telah diubah!');
+        return redirect(request()->segment(1).'/member')->with('success', 'Data telah diubah!');
     }
 
     /**
@@ -105,6 +105,6 @@ class MemberController extends Controller
     {
         $validatedData = Member::find($id);
         $validatedData->delete();
-        return redirect('/dashboard/member')->with('success', 'Data telah dihapus!');
+        return redirect(request()->segment(1).'/member')->with('success', 'Data telah dihapus!');
     }
 }

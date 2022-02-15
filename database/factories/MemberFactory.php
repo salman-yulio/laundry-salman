@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Generator;
 
-class OutletFactory extends Factory
+class MemberFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -15,8 +15,9 @@ class OutletFactory extends Factory
     public function definition()
     {
         return [
-            'nama' => $this->faker->company(),
+            'nama' => $this->faker->name(),
             'alamat' => $this->faker->address(),
+            'jenis_kelamin' => $this->faker->randomElement(['L','P']),
             'telepon' => $this->faker->phoneNumber()
         ];
     }

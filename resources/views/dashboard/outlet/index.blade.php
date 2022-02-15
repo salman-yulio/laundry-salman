@@ -33,77 +33,34 @@
                 </div>
                 <div class="x_content">
 
-                    @if (session()->has('success'))
-                    <div class="alert alert-success text-center" role="alert">
-                        {{ session('success') }}
-                    </div>
-                    @endif
-
-                    @if ($errors->any())
-                    <div class="alert alert-danger text-center" role="alert">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
+                  @if (session()->has('success'))
+                  <div class="alert alert-success text-center" role="alert" id="success-alert">
+                      {{ session('success') }}
+                      <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true" >&times;</span>
+                    </button>
+                  </div>
+                  @endif
+            
+                  @if ($errors->any())
+                  <div class="alert alert-danger text-center" role="alert" id="error-alert">
+                    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                      <ul>
+                          @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                          @endforeach
+                      </ul>
+                  </div>
+                  @endif
 
                      <!-- Button trigger modal -->
                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                         Tambah Data
                         </button>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header text-dark">
-                            <h5 class="modal-title" id="exampleModalLabel">Input New Data</h5>
-                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">
-                            <form action="/dashboard/outlet" method="POST" class="mb-5 text-dark" enctype="multipart/form-data" style>
-                            @csrf
-                            <div class="mb-3">
-                                <label for="nama" class="form-label">Nama</label>
-                                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" required autofocus value="{{ old('nama') }}">
-                                @error('nama')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="alamat" class="form-label">Alamat</label>
-                                <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" required autofocus value="{{ old('alamat') }}">
-                                @error('alamat')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="telepon" class="form-label">Telepon</label>
-                                <input type="text" class="form-control @error('telepon') is-invalid @enderror" id="telepon" name="telepon" required autofocus value="{{ old('telepon') }}">
-                                @error('telepon')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            </div>
-                            <div class="modal-footer">
-                            <button type="submit" class="btn btn-secondary">Create Post</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                            </form>
-                        </div>
-                        </div>
-                        </div>
+                        @include('dashboard.outlet.create')
 
                             <div>
                                 <table id="tb-outlet" class="table table-striped table-md">
@@ -125,63 +82,10 @@
                                             <td>{{ $o->telepon }}</td>
                                             <td>
                                             <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#staticBackdrop{{ $o->nama }}">
+                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#staticBackdrop{{ $o->id }}">
                                                 Edit
                                             </button>
-
-                                              <!-- Modal -->
-                                              <div class="modal fade" id="staticBackdrop{{ $o->nama }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                  <div class="modal-content">
-                                                    <div class="modal-header text-dark">
-                                                      <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
-                                                      <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                    <form action="{{ url('dashboard/outlet/'.$o->id) }}" method="POST" class="mb-5" enctype="multipart/form-data">
-                                              @method('PUT')
-                                              @csrf
-                                              <div class="mb-3">
-                                                <label for="nama" class="form-label">Nama</label>
-                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" required autofocus value="{{ old('nama', $o->nama) }}">
-                                                @error('nama')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                              </div>
-                                              <div class="mb-3">
-                                                <label for="alamat" class="form-label">Alamat</label>
-                                                <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" required autofocus value="{{ old('alamat', $o->alamat) }}">
-                                                @error('alamat')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                              </div>
-                                              <div class="mb-3">
-                                                <label for="telepon" class="form-label">Telepon</label>
-                                                <input type="text" class="form-control @error('telepon') is-invalid @enderror" id="telepon" name="telepon" required autofocus value="{{ old('telepon', $o->telepon) }}">
-                                                @error('telepon')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                              </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                      <button type="submit" class="btn btn-dark border-0">Edit Post</button>
-                                                    </div>
-                                                    </form>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                          <form action="{{ url('dashboard/outlet/'.$o->id) }}" method="post" class="d-inline">
-                                              @csrf
-                                              <input type="hidden" name="_method" value="DELETE">
-                                              <button class="btn btn-danger border-0" onclick="return confirm('Anda Yakin?')">Delete</button>
-                                          </form>
+                                            @include('dashboard.outlet.edit')
                                             </td>
                                         </tr>
                                       @endforeach
@@ -201,7 +105,33 @@
       @push('script')
       <script>
           $(function(){
+          //Data Table
               $('#tb-outlet').DataTable();
+
+        // Alert
+        $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+            $("success-alert").slideUp(500);
+        });
+        $("#error-alert").fadeTo(2000, 500).slideUp(500, function(){
+            $("error-alert").slideUp(500);
+        });
+
+        // Delete Alert
+        $('.delete-outlet').click(function(e){
+            e.preventDefault()
+            let data = $(this).closest('tr').find('td:eq(1)').text()
+            swal({
+                title: "Apakah Kamu Yakin?",
+                text: "Yakin Ingin Menghapus Data yang anda pilih?",
+                icon: "warning",
+                buttons:true,
+                dangerMode: true,
+            })
+            .then((req) => {
+                if(req) $(e.target).closest('form').submit()
+                else swal.close()
+            })
+        })
           });
       </script>
 

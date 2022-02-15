@@ -15,7 +15,7 @@ class AddColumnsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('username')->after('email')->unique();
-            $table->foreignId('id_outlet')->constrained('outlet');
+            $table->foreignId('outlet_id')->constrained('outlet');
             $table->enum('role', ['admin', 'kasir', 'owner']);
         });
     }

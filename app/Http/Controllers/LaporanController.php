@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Member;
-use App\Models\Paket;
-use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
-class TransaksiController extends Controller
+class LaporanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +13,7 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        return view('dashboard.transaksi.index',[
-            'paket' => Paket::all(),
-            'member' => Member::all()
-        ]);
+        return view('dashboard.laporan.index');
     }
 
     /**
@@ -46,10 +40,10 @@ class TransaksiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Transaksi  $transaksi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaksi $transaksi)
+    public function show($id)
     {
         //
     }
@@ -57,10 +51,10 @@ class TransaksiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Transaksi  $transaksi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaksi $transaksi)
+    public function edit($id)
     {
         //
     }
@@ -69,10 +63,10 @@ class TransaksiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaksi  $transaksi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaksi $transaksi)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -80,10 +74,10 @@ class TransaksiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Transaksi  $transaksi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaksi $transaksi)
+    public function destroy($id)
     {
         //
     }

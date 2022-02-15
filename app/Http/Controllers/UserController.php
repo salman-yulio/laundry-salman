@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Member;
-use App\Models\Paket;
-use App\Models\Transaksi;
+use App\Models\User;
+use App\Models\Outlet;
 use Illuminate\Http\Request;
 
-class TransaksiController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +15,9 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        return view('dashboard.transaksi.index',[
-            'paket' => Paket::all(),
-            'member' => Member::all()
+        return view('dashboard.user.index', [
+            'user' => User::all(),
+            'outlet' => Outlet::all()
         ]);
     }
 
@@ -29,7 +28,9 @@ class TransaksiController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.user.create',[
+            'outlet' => Outlet::all()
+        ]);
     }
 
     /**
@@ -40,16 +41,27 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'id_outlet' => 'required',
+            'role' => 'required'
+        ]);
+
+        User::create($validatedData);
+
+        return redirect(request()->segment(1).'/user')->with('success', 'Data baru telah ditambahkan!');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Transaksi  $transaksi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaksi $transaksi)
+    public function show($id)
     {
         //
     }
@@ -57,10 +69,10 @@ class TransaksiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Transaksi  $transaksi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaksi $transaksi)
+    public function edit($id)
     {
         //
     }
@@ -69,10 +81,10 @@ class TransaksiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaksi  $transaksi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaksi $transaksi)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -80,11 +92,13 @@ class TransaksiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Transaksi  $transaksi
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaksi $transaksi)
+    public function destroy($id)
     {
-        //
+        $validatedData = User::find($id);
+        $validatedData->delete();
+        return redirect(request()->segment(1).'/user')->with('success', 'Data telah dihapus!');
     }
 }

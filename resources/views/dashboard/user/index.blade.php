@@ -7,7 +7,7 @@
         <div class="">
           <div class="page-title">
             <div class="title_left">
-              <h3>Dashboard</h3>
+              <h3>Master Data</h3>
             </div>
 
             <div class="title_right">
@@ -22,7 +22,7 @@
             <div class="col-md-12 col-sm-12  ">
               <div class="x_panel">
                 <div class="x_title">
-                    <h2>Tabel User</h2>
+                  <h2>Tabel User</h2>
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -33,65 +33,68 @@
                 </div>
                 <div class="x_content">
 
-                    <div>
-                        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                            <div class="item form-group">
-                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">First Name <span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="first-name" required="required" class="form-control ">
-                            </div>
-                            </div>
-                            <div class="item form-group">
-                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Last Name <span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 ">
-                            <input type="text" id="last-name" name="last-name" required="required" class="form-control">
-                            </div>
-                            </div>
-                            <div class="item form-group">
-                            <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Middle Name / Initial</label>
-                            <div class="col-md-6 col-sm-6 ">
-                            <input id="middle-name" class="form-control" type="text" name="middle-name">
-                            </div>
-                            </div>
-                            <div class="item form-group">
-                            <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
-                            <div class="col-md-6 col-sm-6 ">
-                            <div id="gender" class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-secondary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                            <input type="radio" name="gender" value="male" class="join-btn"> &nbsp; Male &nbsp;
-                            </label>
-                            <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                            <input type="radio" name="gender" value="female" class="join-btn"> Female
-                            </label>
-                            </div>
-                            </div>
-                            </div>
-                            <div class="item form-group">
-                            <label class="col-form-label col-md-3 col-sm-3 label-align">Date Of Birth <span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 ">
-                            <input id="birthday" class="date-picker form-control" placeholder="dd-mm-yyyy" type="text" required="required" type="text" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
-                            <script>
-                                                                                function timeFunctionLong(input) {
-                                                                                    setTimeout(function() {
-                                                                                        input.type = 'text';
-                                                                                    }, 60000);
-                                                                                }
-                                                                            </script>
-                            </div>
-                            </div>
-                            <div class="ln_solid"></div>
-                            <div class="item form-group">
-                            <div class="col-md-6 col-sm-6 offset-md-3">
-                            <button class="btn btn-primary" type="button">Cancel</button>
-                            <button class="btn btn-primary" type="reset">Reset</button>
-                            <button type="submit" class="btn btn-success">Submit</button>
-                            </div>
-                            </div>
-                            </form>
-                        </div>
+                 @if (session()->has('success'))
+                  <div class="alert alert-success text-center" role="alert" id="success-alert">
+                      {{ session('success') }}
+                      <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true" >&times;</span>
+                    </button>
+                  </div>
+                  @endif
+
+                  @if ($errors->any())
+                  <div class="alert alert-danger text-center" role="alert" id="error-alert">
+                    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                      <ul>
+                          @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                          @endforeach
+                      </ul>
+                  </div>
+                  @endif
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Register
+                      </button>
+                    @include('dashboard.user.create')
+                            <div>
+                                <table id="tb-user" class="table table-striped table-md">
+                                    <thead>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Outlet</th>
+                                        <th scope="col">Role</th>
+                                        {{-- <th scope="col">Action</th> --}}
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($user as $u)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $u->name }}</td>
+                                            <td>{{ $u->username }}</td>
+                                            <td>{{ $u->email }}</td>
+                                            <td>{{ $u->outlet->nama }}</td>
+                                            <td>{{ $u->role }}</td>
+                                            {{-- <td>
+                                            <!-- Button trigger modal -->
+                                            @include('dashboard.user.edit')
+                                            <form action="{{ url('dashboard/user/'.$u->id) }}" method="post" class="d-inline">
+                                                @csrf
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button class="btn btn-danger delete-paket border-0">Delete</button> &nbsp;
+                                                </form>
+                                            </td> --}}
+                                        </tr>
+                                      @endforeach
+                                    </tbody>
+                                </table>
+                                </div>
+                    </div>
 
                 </div>
               </div>
@@ -100,6 +103,43 @@
         </div>
       </div>
       <!-- /page content -->
+
+      @push('script')
+      <script>
+          $(function(){
+            //Data Tables
+              $('#tb-paket').DataTable();
+
+          // Alert
+        // $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+        //     $("success-alert").slideUp(500);
+        // });
+        // $("#error-alert").fadeTo(2000, 500).slideUp(500, function(){
+        //     $("error-alert").slideUp(500);
+        // });
+
+        // Delete Alert
+        $('.delete-user').click(function(e){
+            e.preventDefault()
+            let data = $(this).closest('tr').find('td:eq(1)').text()
+            swal({
+                title: "Apakah Kamu Yakin?",
+                text: "Yakin Ingin Menghapus Data yang anda pilih?",
+                icon: "warning",
+                buttons:true,
+                dangerMode: true,
+            })
+            .then((req) => {
+                if(req) $(e.target).closest('form').submit()
+                else swal.close()
+            })
+        })
+          });
+      </script>
+
+
+
+        @endpush
 
 @endsection
 
