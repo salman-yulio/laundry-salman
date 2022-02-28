@@ -37,6 +37,8 @@
           </li>
           <li><a href="/a/transaksi"><i class="fa fa-usd"></i> Transaksi</a>
           </li>
+          <li><a href="/transaksi2"><i class="fa fa-usd"></i> Transaksi 2</a>
+          </li>
           <li><a href="/a/user"><i class="fa fa-user"></i> User </a>
           </li>
         </ul>

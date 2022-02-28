@@ -24,10 +24,6 @@
                 <div class="x_title">
                   <h2>Tabel Member</h2>
                   <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li><a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>
                   </ul>
                   <div class="clearfix"></div>
                 </div>
@@ -41,7 +37,7 @@
                     </button>
                   </div>
                   @endif
-            
+
                   @if ($errors->any())
                   <div class="alert alert-danger text-center" role="alert" id="error-alert">
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">

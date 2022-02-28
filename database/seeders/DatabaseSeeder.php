@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
 
 
         \App\Models\Member::factory(10)->create();
-        // \App\Models\Outlet::factory(10)->create();
-        // $this->call(UserSeeder::class);
+        \App\Models\Outlet::factory(10)->create();
+        $this->call(UserSeeder::class);
     }
 }

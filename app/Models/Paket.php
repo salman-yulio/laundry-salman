@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Paket extends Model
 {
     use HasFactory;
-    // protected $primarykey = 'id';
-    // public $incrementing = false;
+    protected $primarykey = 'id';
+    public $incrementing = true;
     protected $table = 'paket';
     protected $fillable = [
-        'outlet_id',
+        'id_outlet',
         'jenis',
         'nama_paket',
         'harga'
@@ -20,6 +20,6 @@ class Paket extends Model
 
     public function outlet()
     {
-        return $this->belongsTo(Outlet::class);
+        return $this->belongsTo(Outlet::class, 'id_outlet');
     }
 }

@@ -10,23 +10,10 @@
       <form action="/{{ request()->segment(1)}}/paket/{{ $p->id }}" method="POST" class="mb-5" enctype="multipart/form-data">
 @method('PUT')
 @csrf
-<div class="mb-3">
-  <label for="id_outlet" class="form-label">Outlet</label>
-    <select class="form-control form-select form-select mb-3" aria-label=".form-select example" id="id_outlet" name="id_outlet">
-        <option selected>Pilih Outlet</option>
-          @foreach ($outlet as $o )
-              @if (old('id_outlet') == $o->id)
-              <option value="{{ $o->id }}" selected>{{ $o->nama }}</option>
-              @else
-              <option value="{{ $o->id }}">{{ $o->nama }}</option>
-              @endif
-          @endforeach
-      </select>
-  @error('nama')
-      <div class="invalid-feedback">
-          {{ $message }}
-      </div>
-  @enderror
+<div class="form-group mb-3">
+    <label for="id_outlet" class="form-label">ID Outlet</label>
+    <input type="text" id="id_outlet" name="id_outlet" value="{{ $p->id_outlet }}"
+        class="form-control" placeholder="Nama Paket" readonly>
 </div>
 <div class="mb-3">
   <label for="jenis" class="form-label">Jenis</label>

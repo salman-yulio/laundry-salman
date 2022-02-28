@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaketTable extends Migration
+class CreateBarangInventarisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreatePaketTable extends Migration
      */
     public function up()
     {
-        Schema::create('paket', function (Blueprint $table) {
+        Schema::create('barang_inventaris', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_outlet');
-            $table->enum('jenis', ['kiloan', 'selimut', 'bed_cover', 'kaos', 'lainnya']);
-            $table->string('nama_paket');
-            $table->double('harga');
+            $table->string('nama_barang');
+            $table->string('merk_barang');
+            $table->double('qty');
+            $table->enum('kondisi', ['layak_pakai', 'rusak_ringan', 'rusak_berat']);
+            $table->date('tanggal_pengadaan');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreatePaketTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('paket');
+        Schema::dropIfExists('barang_inventaris');
     }
 }

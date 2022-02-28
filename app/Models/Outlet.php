@@ -10,18 +10,18 @@ class Outlet extends Model
     use HasFactory;
 
     protected $primarykey = 'id';
-    public $incrementing = false;
+    public $incrementing = true;
     protected $table = 'outlet';
     protected $guarded = ['id'];
 
     public function paket()
     {
-        return $this->hasMany(Paket::class);
+        return $this->hasMany(Paket::class, 'id_outlet');
     }
 
     public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'id_outlet');
     }
 
 }

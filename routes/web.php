@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\Transaksi2Controller;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PaketController;
 use App\Http\Controllers\MemberController;
@@ -26,6 +27,10 @@ Route::get('/', function () {
     return view('dashboard.index');
 });
 
+Route::get('/transaksi2', function () {
+    return view('dashboard.transaksi2.index');
+});
+
 // Route::get('/dashboard', function () {
 //     return view('dashboard.index');
 // })->middleware('auth');
@@ -45,7 +50,7 @@ Route::group(['prefix' =>'a','middleware'=>['isAdmin','auth']], function(){
     Route::resource('paket', PaketController::class);
     Route::resource('outlet', OutletController::class);
     Route::resource('user', UserController::class);
-    Route::get('transaksi', [TransaksiController::class, 'index']);
+    Route::resource('transaksi', TransaksiController::class);
     Route::get('laporan', [LaporanController::class, 'index']);
 });
 

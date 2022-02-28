@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => bcrypt('a'),
                 'remember_token' => Str::random(10),
-                'outlet_id' => '1',
+                'id_outlet' => '1',
                 'role' => 'admin'
             ],
             [
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => bcrypt('a'),
                 'remember_token' => Str::random(10),
-                'outlet_id' => '1',
+                'id_outlet' => '1',
                 'role' => 'owner'
             ],
             [
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => bcrypt('a'),
                 'remember_token' => Str::random(10),
-                'outlet_id' => '1',
+                'id_outlet' => '1',
                 'role' => 'kasir'
             ],
         ];
