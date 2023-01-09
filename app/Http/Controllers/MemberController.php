@@ -4,23 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use Illuminate\Http\Request;
+use App\Exports\MemberExport;
+use App\Imports\MemberImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MemberController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan view dan mengirimkan data dari model
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return view('dashboard.member.index',[
+        return view('dashboard.member.index', [
             'member' => member::all()
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan view create data
      *
      * @return \Illuminate\Http\Response
      */
@@ -30,7 +33,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data ke database
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -46,22 +49,11 @@ class MemberController extends Controller
 
         Member::create($validatedData);
 
-        return redirect(request()->segment(1).'/member')->with('success', 'Data baru telah ditambahkan!');
+        return redirect(request()->segment(1) . '/member')->with('success', 'Data baru telah ditambahkan!');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Member  $member
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Member $member)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Menampilkan view edit dan menampilkan data yang akan diupdate
      *
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
@@ -74,7 +66,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Proses update data
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Member  $member
@@ -92,11 +84,11 @@ class MemberController extends Controller
         Member::where('id', $member->id)
             ->update($validatedData);
 
-        return redirect(request()->segment(1).'/member')->with('success', 'Data telah diubah!');
+        return redirect(request()->segment(1) . '/member')->with('success', 'Data telah diubah!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus data sesuai id
      *
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
@@ -105,6 +97,36 @@ class MemberController extends Controller
     {
         $validatedData = Member::find($id);
         $validatedData->delete();
-        return redirect(request()->segment(1).'/member')->with('success', 'Data telah dihapus!');
+        return redirect(request()->segment(1) . '/member')->with('success', 'Data telah dihapus!');
+    }
+
+    /**
+     * Melakukan export data dari view dan database menjadi file excel
+     */
+    public function exportMember()
+    {
+        return Excel::download(new MemberExport, 'member.xlsx');
+    }
+
+    /**
+     * Melakukan upload data excel dan meng importnya untuk dimasukan ke dalam database
+     * dan menampilkan datanya ke view
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file2' => 'file|required|mimes:xlsx',
+        ]);
+
+        if ($request) {
+            Excel::import(new MemberImport, $request->file('file2'));
+        } else {
+            return back()->withErrors([
+                'file2' => 'file belum terisi',
+            ]);
+        }
+
+        return redirect(request()->segment(1) . '/member')->with('success', 'Data berhasil diimport!');
+        // return redirect()->route('member.index')->with('success', 'Data berhasil diimport!');
     }
 }

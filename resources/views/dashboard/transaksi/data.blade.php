@@ -33,12 +33,16 @@
                                                 data-toggle="modal" data-target="#DetailModal{{ $dt->id_transaksi }}">
                                                 Detail
                                             </button>
-                                            <button type="submit" class="btn btn-outline-primary  border-0"
+                                            {{-- <button type="submit" class="btn btn-outline-primary  border-0"
                                                 data-toggle="modal" data-target="#Faktur{{ $dt->id_transaksi }}">
                                                 Faktur
-                                            </button>
+                                            </button> --}}
+                                            <a href="{{ route('faktur', $dt->id) }}" target="_blank" class="btn btn-outline-primary  border-0">
+                                                Faktur
+                                            </a>
                                         </td>
                                     </tr>
+                                    @include('dashboard.transaksi.detail')
                                 @endforeach
                             </tbody>
                         </table>

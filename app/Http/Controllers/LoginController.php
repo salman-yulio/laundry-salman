@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -22,20 +23,22 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        if(Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            if(Auth::user()->role == 'admin'){
+            if (Auth::user()->role == 'admin') {
                 return redirect()->route('a.dashboard');
-            }else if(Auth::user()->role == 'kasir'){
+            } else if (Auth::user()->role == 'kasir') {
                 return redirect()->route('k.dashboard');
-            }else if(Auth::user()->role == 'owner'){
+            } else if (Auth::user()->role == 'owner') {
                 return redirect()->route('o.dashboard');
             }
             return redirect()->intended('/dashboard');
+        } else {
+            // return back()->with('loginError', 'Username atau password salah');
+            Session::flash('error', 'Email atau password salah');
+            return redirect('/');
         }
-
-        return back()->with('loginError', 'Username atau password salah');
     }
 
     public function logout()
@@ -48,5 +51,4 @@ class LoginController extends Controller
 
         return redirect('/');
     }
-
 }

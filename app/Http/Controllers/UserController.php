@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Outlet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Exports\UserExport;
+use App\Imports\UserImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -28,7 +32,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('dashboard.user.create',[
+        return view('dashboard.user.create', [
             'outlet' => Outlet::all()
         ]);
     }
@@ -50,9 +54,10 @@ class UserController extends Controller
             'role' => 'required'
         ]);
 
+        $validatedData['password'] = Hash::make($validatedData['password']);
         User::create($validatedData);
 
-        return redirect(request()->segment(1).'/user')->with('success', 'Data baru telah ditambahkan!');
+        return redirect(request()->segment(1) . '/user')->with('success', 'Data baru telah ditambahkan!');
     }
 
     /**
@@ -81,24 +86,58 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\user  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, user $user)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'id_outlet' => 'required',
+            'role' => 'required'
+        ]);
+
+
+        user::where('id', $user->id)
+            ->update($validatedData);
+
+        return redirect(request()->segment(1) . '/user')->with('success', 'Post has been edited!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $validatedData = User::find($id);
         $validatedData->delete();
-        return redirect(request()->segment(1).'/user')->with('success', 'Data telah dihapus!');
+        return redirect(request()->segment(1) . '/user')->with('success', 'Data telah dihapus!');
+    }
+
+    public function exportData()
+    {
+        $date =  date('Y-m-d H:i:s');
+        return Excel::download(new UserExport, $date . '_user.xlsx');
+    }
+
+    public function importData(Request $request)
+    {
+        $request->validate([
+            'file2' => 'file|mimes:xlsx, xls, xlsm, xlsb'
+        ]);
+
+        if ($request) {
+            Excel::import(new UserImport, $request->file('file2'));
+        } else {
+            return back()->withErrors([
+                'file2' => "File Bukan Excel"
+            ]);
+        }
+
+        return back()->with('success', 'Impor data berhasil!');
     }
 }

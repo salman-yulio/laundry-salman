@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
@@ -18,31 +19,60 @@
 
     <!-- Custom Theme Style -->
     <link href="{{ asset('assets') }}/build/css/custom.min.css" rel="stylesheet">
-  </head>
+</head>
 
-  <body class="nav-md">
+<body class="nav-md">
     <div class="container body">
-      <div class="main_container">
-        <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
-            @if(auth()->user()->role == 'admin')
-                @include('layouts.sidebar-admin')
-            @elseif(auth()->user()->role == 'kasir')
-                @include('layouts.sidebar-kasir')
-            @elseif(auth()->user()->role == 'owner')
-                @include('layouts.sidebar-owner')
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    @if (auth()->user()->role == 'admin')
+                        @include('layouts.sidebar-admin')
+                    @elseif(auth()->user()->role == 'kasir')
+                        @include('layouts.sidebar-kasir')
+                    @elseif(auth()->user()->role == 'owner')
+                        @include('layouts.sidebar-owner')
+                    @endif
 
-            @endif
+                </div>
+            </div>
 
-          </div>
+            @include('layouts.header')
+
+            <!-- Content Dari Index -->
+            @yield('content')
+            <footer>
+                <div class="pull-right">
+                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
         </div>
-
-       @include('layouts.header')
-
-                <!-- Content Dari Index -->
-                @yield('content')
-      </div>
     </div>
+
+    @push('script')
+        <script>
+            $(function() {
+
+                // Logout Alert
+                $('.logout-alert').click(function(e) {
+                    e.preventDefault()
+                    let data = $(this).closest('tr').find('td:eq(1)').text()
+                    swal({
+                            title: "Apakah Kamu Yakin?",
+                            text: "Yakin Ingin Logout?",
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                        .then((req) => {
+                            if (req) $(e.target).closest('form').submit()
+                            else swal.close()
+                        })
+                })
+            });
+        </script>
+    @endpush
 
     <script src="/js/sweetalert.min.js"></script>
     <!-- jQuery -->
@@ -61,5 +91,6 @@
 
 
     @stack('script')
-  </body>
+</body>
+
 </html>

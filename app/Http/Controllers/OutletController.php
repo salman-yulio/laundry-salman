@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Outlet;
 use Illuminate\Http\Request;
+use App\Exports\OutletExport;
+use App\Imports\OutletImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OutletController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan view dan mengirimkan data dari model
      *
      * @return \Illuminate\Http\Response
      */
@@ -20,7 +23,7 @@ class OutletController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan view create data
      *
      * @return \Illuminate\Http\Response
      */
@@ -30,7 +33,7 @@ class OutletController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data ke database
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -45,22 +48,11 @@ class OutletController extends Controller
 
         Outlet::create($validatedData);
 
-        return redirect(request()->segment(1).'/outlet')->with('success', 'Data baru telah ditambahkan!');
+        return redirect(request()->segment(1) . '/outlet')->with('success', 'Data baru telah ditambahkan!');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Outlet  $outlet
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Outlet $outlet)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Menampilkan view edit dan menampilkan data yang akan diupdate
      *
      * @param  \App\Models\Outlet  $outlet
      * @return \Illuminate\Http\Response
@@ -73,7 +65,7 @@ class OutletController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Proses update data
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Outlet  $outlet
@@ -90,11 +82,11 @@ class OutletController extends Controller
         Outlet::where('id', $outlet->id)
             ->update($validatedData);
 
-        return redirect(request()->segment(1).'/outlet')->with('success', 'Data telah diubah!');
+        return redirect(request()->segment(1) . '/outlet')->with('success', 'Data telah diubah!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus data sesuai id
      *
      * @param  \App\Models\Outlet  $outlet
      * @return \Illuminate\Http\Response
@@ -103,6 +95,36 @@ class OutletController extends Controller
     {
         $validatedData = Outlet::find($id);
         $validatedData->delete();
-        return redirect(request()->segment(1).'/outlet')->with('success', 'Data telah dihapus!');
+        return redirect(request()->segment(1) . '/outlet')->with('success', 'Data telah dihapus!');
+    }
+
+    /**
+     * Melakukan export data dari view dan database menjadi file excel
+     */
+    public function exportOutlet()
+    {
+        return Excel::download(new OutletExport, 'outlet.xlsx');
+    }
+
+    /**
+     * Melakukan upload data excel dan meng importnya untuk dimasukan ke dalam database
+     * dan menampilkan datanya ke view
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file2' => 'file|required|mimes:xlsx',
+        ]);
+
+        if ($request) {
+            Excel::import(new OutletImport, $request->file('file2'));
+        } else {
+            return back()->withErrors([
+                'file2' => 'file belum terisi',
+            ]);
+        }
+
+        // return redirect(request()->segment(1).'/outlet')->route('outlet.index')->with('success', 'Data berhasil diimport!');
+        return redirect()->route('outlet.index')->with('success', 'Data berhasil diimport!');
     }
 }

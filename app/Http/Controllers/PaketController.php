@@ -5,30 +5,33 @@ namespace App\Http\Controllers;
 use App\Models\Paket;
 use App\Models\Outlet;
 use Illuminate\Http\Request;
+use App\Exports\PaketExport;
+use App\Imports\PaketImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PaketController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan view dan mengirimkan data dari model
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return view('dashboard.paket.index',[
+        return view('dashboard.paket.index', [
             'paket' => Paket::all(),
             'outlet' => Outlet::all()
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan view create data
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        return view('dashboard.paket.create',[
+        return view('dashboard.paket.create', [
             'outlet' => Outlet::all()
         ]);
     }
@@ -50,18 +53,7 @@ class PaketController extends Controller
 
         Paket::create($validatedData);
 
-        return redirect(request()->segment(1).'/paket')->with('success', 'Data baru telah ditambahkan!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Paket  $paket
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Paket $paket)
-    {
-        //
+        return redirect(request()->segment(1) . '/paket')->with('success', 'Data baru telah ditambahkan!');
     }
 
     /**
@@ -72,7 +64,7 @@ class PaketController extends Controller
      */
     public function edit(Paket $paket)
     {
-        return view('dashboard.paket.edit',[
+        return view('dashboard.paket.edit', [
             'paket' => paket::all()
         ]);
     }
@@ -96,7 +88,7 @@ class PaketController extends Controller
         Paket::where('id', $paket->id)
             ->update($validatedData);
 
-        return redirect(request()->segment(1).'/paket')->with('success', 'Data telah diubah!');
+        return redirect(request()->segment(1) . '/paket')->with('success', 'Data telah diubah!');
     }
 
     /**
@@ -109,6 +101,36 @@ class PaketController extends Controller
     {
         $validatedData = Paket::find($id);
         $validatedData->delete();
-        return redirect(request()->segment(1).'/paket')->with('success', 'Data telah dihapus!');
+        return redirect(request()->segment(1) . '/paket')->with('success', 'Data telah dihapus!');
+    }
+
+    /**
+     * Melakukan export data dari view dan database menjadi file excel
+     */
+    public function exportPaket()
+    {
+        return Excel::download(new PaketExport, 'paket.xlsx');
+    }
+
+    /**
+     * Melakukan upload data excel dan meng importnya untuk dimasukan ke dalam database
+     * dan menampilkan datanya ke view
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file2' => 'file|required|mimes:xlsx',
+        ]);
+
+        if ($request) {
+            Excel::import(new PaketImport, $request->file('file2'));
+        } else {
+            return back()->withErrors([
+                'file2' => 'file belum terisi',
+            ]);
+        }
+
+        return redirect(request()->segment(1) . '/paket')->with('success', 'Data berhasil diimport!');
+        // return redirect()->route('paket.index')->with('success', 'Data berhasil diimport!');
     }
 }
