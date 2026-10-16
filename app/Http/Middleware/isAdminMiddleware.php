@@ -17,10 +17,15 @@ class isAdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->role == 'admin'){
-            return $next($request);
-        }else{
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
+
+        // Sudah login tapi bukan admin: tolak, jangan redirect ke login (sebelumnya menimbulkan redirect loop)
+        if (Auth::user()->role != 'admin') {
+            abort(403, 'Halaman ini hanya untuk admin.');
+        }
+
+        return $next($request);
     }
 }

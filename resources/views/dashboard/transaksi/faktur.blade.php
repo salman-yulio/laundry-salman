@@ -52,7 +52,7 @@
                     </tr>
                     <tr>
                         <td  style="text-align: right;padding-right: 6">Diskon</td>
-                        <td>{{ $dt->transaksi->diskon }}%</td>
+                        <td>{{ $dt->transaksi->jenis_diskon == 'persen' ? $dt->transaksi->diskon . '%' : $dt->transaksi->diskon }}</td>
                     </tr>
                     <tr>
                         <td  style="text-align: right;padding-right: 6">Pajak</td>

@@ -64,16 +64,12 @@
                                                     <div class="col-12">
                                                         <div class="table-responsive">
 
-                                                            <a href="
-                                                                                                    {{ route('export-laporan') }}
-                                                                                                    "
+                                                            <a href="{{ url(request()->segment(1) . '/export/laporan') }}"
                                                                 class="btn btn-success me-3 mb-3">
                                                                 Export Excel
                                                             </a>
 
-                                                            <a href="
-                                                                                                    {{ route('laporanPDF') }}
-                                                                                                    " target="_blank"
+                                                            <a href="{{ url(request()->segment(1) . '/laporan/pdf') }}" target="_blank"
                                                                 class="btn btn-secondary mb-3">
                                                                 Export PDF
                                                             </a>

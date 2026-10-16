@@ -17,10 +17,15 @@ class isOwnerMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->role == 'owner'){
-            return $next($request);
-        }else{
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
+
+        // Sudah login tapi bukan owner: tolak, jangan redirect ke login (sebelumnya menimbulkan redirect loop)
+        if (Auth::user()->role != 'owner') {
+            abort(403, 'Halaman ini hanya untuk owner.');
+        }
+
+        return $next($request);
     }
 }

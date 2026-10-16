@@ -186,7 +186,7 @@
                         status: status,
                         _token: "{{ csrf_token() }}"
                     };
-                    $.post('{{ route('status') }}', data, function(msg) {
+                    $.post('{{ route('penjemputan.status') }}', data, function(msg) {
 
                     })
                     console.log(id);

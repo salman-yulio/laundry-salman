@@ -17,10 +17,15 @@ class isKasirMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->role == 'kasir'){
-            return $next($request);
-        }else{
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
+
+        // Sudah login tapi bukan kasir: tolak, jangan redirect ke login (sebelumnya menimbulkan redirect loop)
+        if (Auth::user()->role != 'kasir') {
+            abort(403, 'Halaman ini hanya untuk kasir.');
+        }
+
+        return $next($request);
     }
 }

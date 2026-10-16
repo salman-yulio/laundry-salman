@@ -63,17 +63,42 @@ class TransaksiController extends Controller
      */
     public function store(StoreTransaksiRequest $request)
     {
-        //
-        //dd($request);
-        $request['id_outlet'] = auth()->user()->id_outlet;
-        $request['kode_invoice'] = $this->generateKodeInvoice();
-        $request['tgl_bayar'] = ($request->bayar == 0 ? NULL : date('Y-m-d H:i:s'));
-        $request['status'] = 'baru';
-        $request['dibayar'] = ($request->bayar == 0 ? 'belum_dibayar' : 'dibayar');
-        $request['id_user'] = auth()->user()->id;
+        // Subtotal dihitung dari harga paket di database, bukan dari angka yang dikirim form,
+        // supaya total tidak bisa dimanipulasi dari browser
+        $paket = Paket::whereIn('id', (array) $request->id_paket)->get()->keyBy('id');
+        $subtotal = 0;
+        foreach ((array) $request->id_paket as $i => $idPaket) {
+            if (!isset($paket[$idPaket])) {
+                return back()->withErrors(['transaksi' => 'Paket tidak ditemukan.']);
+            }
+            $subtotal += $paket[$idPaket]->harga * max(1, (int) $request->qty[$i]);
+        }
+
+        // Rumus sama dengan perhitungan di form: subtotal - diskon + biaya tambahan + pajak (%)
+        $diskon = (float) $request->diskon;
+        $biayaTambahan = (float) $request->biaya_tambahan;
+        $pajakPersen = (float) $request->pajak;
+        $total = $subtotal - $diskon + $biayaTambahan + ($pajakPersen / 100 * $subtotal);
+        $dibayar = $request->bayar > 0;
 
         //input transaksi
-        $input_transaksi = Transaksi::create($request->all());
+        $input_transaksi = Transaksi::create([
+            'id_outlet' => auth()->user()->id_outlet,
+            'id_member' => $request->id_member,
+            'id_user' => auth()->user()->id,
+            'kode_invoice' => $this->generateKodeInvoice(),
+            'tgl' => $request->tgl,
+            'deadline' => $request->deadline,
+            'tgl_bayar' => $dibayar ? now() : null,
+            'biaya_tambahan' => $biayaTambahan,
+            'diskon' => $diskon,
+            'jenis_diskon' => 'nominal',
+            'pajak' => $pajakPersen,
+            'subtotal' => round($subtotal),
+            'total' => round($total),
+            'status' => 'baru',
+            'status_pembayaran' => $dibayar ? 'dibayar' : 'belum_dibayar',
+        ]);
         if ($input_transaksi == null) {
             return back()->withErrors([
                 'transaksi' => 'Input Transaksi Gagal!',

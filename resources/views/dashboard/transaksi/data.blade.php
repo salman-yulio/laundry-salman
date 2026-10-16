@@ -37,7 +37,7 @@
                                                 data-toggle="modal" data-target="#Faktur{{ $dt->id_transaksi }}">
                                                 Faktur
                                             </button> --}}
-                                            <a href="{{ route('faktur', $dt->id) }}" target="_blank" class="btn btn-outline-primary  border-0">
+                                            <a href="{{ url(request()->segment(1) . '/transaksi/faktur/' . $dt->id_transaksi) }}" target="_blank" class="btn btn-outline-primary  border-0">
                                                 Faktur
                                             </a>
                                         </td>

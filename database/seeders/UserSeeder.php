@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'username' => 'admin',
                 'email_verified_at' => now(),
-                'password' => bcrypt('a'),
+                'password' => bcrypt('password123'),
                 'remember_token' => Str::random(10),
                 'id_outlet' => '1',
                 'role' => 'admin'
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
                 'email' => 'owner@gmail.com',
                 'username' => 'owner',
                 'email_verified_at' => now(),
-                'password' => bcrypt('a'),
+                'password' => bcrypt('password123'),
                 'remember_token' => Str::random(10),
                 'id_outlet' => '1',
                 'role' => 'owner'
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
                 'email' => 'kasir@gmail.com',
                 'username' => 'kasir',
                 'email_verified_at' => now(),
-                'password' => bcrypt('a'),
+                'password' => bcrypt('password123'),
                 'remember_token' => Str::random(10),
                 'id_outlet' => '1',
                 'role' => 'kasir'

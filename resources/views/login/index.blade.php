@@ -67,12 +67,6 @@
             </div>
         </div>
     </div>
-    <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
-        data-cf-beacon='{"rayId":"6a8b4faae117ffb4","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2021.10.0","si":100}'>
-    </script>
-    <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
-        data-cf-beacon='{"rayId":"6a8b4fa9eadfffb4","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2021.10.0","si":100}'>
-    </script>
     <!-- jQuery -->
     <script src="{{ asset('assets') }}/vendors/jquery/dist/jquery.min.js"></script>
 

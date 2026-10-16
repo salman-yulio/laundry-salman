@@ -206,7 +206,7 @@
                         _token: "{{ csrf_token() }}"
                     };
                     let row = $(this).closest('tr')
-                    $.post('{{ route('status') }}', data, function(res) {
+                    $.post('{{ route('penggunaan.status') }}', data, function(res) {
                         swal("Sukses", "Data Berhasil Diubah", "success", {
                             buttons: false,
                             timer: 1000,

@@ -31,10 +31,6 @@ use App\Http\Controllers\PenggunaanController;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard.index');
-});
-
 // Route::get('/transaksi2', function () {
 //     return view('dashboard.transaksi2.index');
 // });
@@ -68,7 +64,6 @@ Route::group(['prefix' => 'a', 'middleware' => ['isAdmin', 'auth']], function ()
     Route::post('import/user', [UserController::class, 'importData'])->name('import-user');
     Route::resource('transaksi', TransaksiController::class);
     Route::get('transaksi/faktur/{id}', [TransaksiController::class, 'fakturPDF'])->name('faktur');
-    Route::get('{id}/faktur', [TransaksiController::class, 'fakturPDF'])->name('faktur');
     Route::resource('inventaris', BarangInventarisController::class);
     // Route::get('laporan', [LaporanController::class, 'index']);
     Route::get('/laporan', [TransaksiController::class, 'laporan']);
@@ -79,15 +74,15 @@ Route::group(['prefix' => 'a', 'middleware' => ['isAdmin', 'auth']], function ()
     Route::get('simulasi_transaksi', [TBarangController::class, 'index']);
     // Route::get('penjualan_aksesoris', [AksesorisController::class, 'index']);
     Route::resource('penjemputan', PenjemputanController::class);
-    Route::post('status', [PenjemputanController::class, 'status'])->name('status');
+    Route::post('penjemputan/status', [PenjemputanController::class, 'status'])->name('penjemputan.status');
     Route::get('export/penjemputan', [PenjemputanController::class, 'exportData'])->name('export-penjemputan');
-    Route::post('import/penjemputan', [penjemputanController::class, 'importData'])->name('import-penjemputan');
+    Route::post('import/penjemputan', [PenjemputanController::class, 'importData'])->name('import-penjemputan');
     Route::resource('penggunaan', PenggunaanController::class);
-    Route::post('status', [PenggunaanController::class, 'status'])->name('status');
+    Route::post('penggunaan/status', [PenggunaanController::class, 'status'])->name('penggunaan.status');
     Route::get('export/penggunaan', [PenggunaanController::class, 'exportData'])->name('export-penggunaan');
     Route::post('import/penggunaan', [PenggunaanController::class, 'importData'])->name('import-penggunaan');
     Route::resource('absensi', AbsensiController::class);
-    Route::post('status', [AbsensiController::class, 'status'])->name('status');
+    Route::post('absensi/status', [AbsensiController::class, 'status'])->name('absensi.status');
     Route::get('export/absensi', [AbsensiController::class, 'exportData'])->name('export-absensi');
     Route::post('import/absensi', [AbsensiController::class, 'importData'])->name('import-absensi');
 });
@@ -98,12 +93,18 @@ Route::group(['prefix' => 'k', 'middleware' => ['isKasir', 'auth']], function ()
     // Route::resource('paket', PaketController::class);
     // Route::resource('user', UserController::class);
     Route::get('transaksi', [TransaksiController::class, 'index']);
+    Route::post('transaksi', [TransaksiController::class, 'store']);
+    Route::get('transaksi/faktur/{id}', [TransaksiController::class, 'fakturPDF']);
     // Route::get('laporan', [LaporanController::class, 'index']);
     Route::get('/laporan', [TransaksiController::class, 'laporan']);
+    Route::get('/laporan/pdf', [TransaksiController::class, 'laporanPDF']);
+    Route::get('export/laporan', [TransaksiController::class, 'exportData']);
 });
 
 Route::group(['prefix' => 'o', 'middleware' => ['isOwner', 'auth']], function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('o.dashboard');
     // Route::get('laporan', [LaporanController::class, 'index']);
     Route::get('/laporan', [TransaksiController::class, 'laporan']);
+    Route::get('/laporan/pdf', [TransaksiController::class, 'laporanPDF']);
+    Route::get('export/laporan', [TransaksiController::class, 'exportData']);
 });

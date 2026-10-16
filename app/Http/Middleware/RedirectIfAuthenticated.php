@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +22,20 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                // Arahkan ke dashboard sesuai peran. HOME ('/') adalah halaman login yang memakai
+                // middleware guest, jadi redirect ke sana menimbulkan loop.
+                $dashboard = [
+                    'admin' => 'a.dashboard',
+                    'kasir' => 'k.dashboard',
+                    'owner' => 'o.dashboard',
+                ][Auth::guard($guard)->user()->role] ?? null;
+
+                if ($dashboard) {
+                    return redirect()->route($dashboard);
+                }
+
+                Auth::guard($guard)->logout();
+                return redirect()->route('login');
             }
         }
 

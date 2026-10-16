@@ -1,66 +1,86 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Laundry Salman
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi kasir (POS) dan manajemen laundry multi-outlet berbasis web, dengan tiga peran pengguna: **admin**, **kasir**, dan **owner**. Proyek ini dibuat saat SMK (2022) dengan Laravel 8, lalu di-upgrade ke Laravel 12 pada 2026.
 
-## About Laravel
+<!-- Tambahkan screenshot di sini, misalnya: ![Dashboard admin](docs/dashboard.png) -->
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fitur
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Admin
+- **Master data**: CRUD outlet, paket layanan (kiloan, selimut, bed cover, kaos, lainnya), member, dan user. Semuanya bisa di-export dan di-import lewat Excel.
+- **Transaksi**:
+  - Pilih member dan paket, lalu atur qty, diskon, pajak (%), dan biaya tambahan.
+  - Kode invoice dibuat otomatis (`LJTRS` + tanggal + nomor urut).
+  - Subtotal dan total dihitung ulang di server dari harga paket di database.
+  - Status pembayaran tercatat (dibayar / belum dibayar).
+  - Faktur dicetak sebagai PDF.
+- **Laporan transaksi**: tabel laporan, export Excel, dan export PDF.
+- **Operasional**:
+  - Inventaris barang.
+  - Penjemputan cucian, dengan status tercatat → penjemputan → selesai.
+  - Penggunaan barang, dengan status diajukan beli / habis / tersedia.
+  - Absensi karyawan.
+  - Status diubah langsung dari tabel (AJAX). Penjemputan, penggunaan, dan absensi juga bisa di-export dan di-import lewat Excel.
+- **Simulasi**: halaman latihan perhitungan gaji, transaksi barang, dan penjualan dengan diskon. Semuanya berjalan di browser (JavaScript).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Kasir
+- Kelola member.
+- Input transaksi dan cetak faktur PDF.
+- Lihat laporan, lalu export ke Excel atau PDF.
 
-## Learning Laravel
+### Owner
+- Lihat laporan, lalu export ke Excel atau PDF.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Hak akses dicek di server lewat middleware per peran. Pengguna yang membuka halaman peran lain mendapat respons 403.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Teknologi
 
-## Laravel Sponsors
+- Laravel 12 dan PHP 8.3+ (diuji di PHP 8.5)
+- MySQL
+- [Laravel Excel](https://laravel-excel.com/) 4 untuk export dan import Excel
+- [Laravel DomPDF](https://github.com/barryvdh/laravel-dompdf) 3 untuk faktur dan laporan PDF
+- Template admin [Gentelella](https://github.com/ColorlibHQ/gentelella) (Bootstrap 4, jQuery, DataTables, SweetAlert)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Cara menjalankan
 
-### Premium Partners
+Kebutuhan: PHP 8.3+ (ekstensi `pdo_mysql`, `mbstring`, `gd`, `zip`, `xml`), Composer, dan MySQL.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
+```bash
+git clone https://github.com/salman-yulio/laundry-salman.git
+cd laundry-salman
+composer install
+cp .env.example .env              # sesuaikan DB_USERNAME dan DB_PASSWORD jika perlu
+php artisan key:generate
+mysql -u root -e "CREATE DATABASE laundry"
+php artisan migrate --seed
+php artisan serve
+```
 
-## Contributing
+Buka http://127.0.0.1:8000. Seeder membuat 10 outlet, 10 member, dan tiga akun demo, semuanya dengan password `password123`:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Email | Peran |
+|---|---|
+| `admin@gmail.com` | admin |
+| `kasir@gmail.com` | kasir |
+| `owner@gmail.com` | owner |
 
-## Code of Conduct
+Paket belum dibuat oleh seeder, jadi tambahkan paket lewat menu **Paket** (sebagai admin) sebelum mencoba transaksi. User yang ditambahkan lewat import Excel mendapat password awal `password123`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Riwayat
 
-## Security Vulnerabilities
+| Waktu | Perubahan |
+|---|---|
+| Januari 2022 | Proyek dimulai dengan Laravel 8: skema database (outlet, paket, member, transaksi, detail transaksi, user) |
+| Februari–April 2022 | CRUD master data, login multi-peran, transaksi dan faktur, laporan, export/import Excel, inventaris, penjemputan, penggunaan barang, absensi, dan simulasi |
+| Oktober 2026 | Upgrade ke Laravel 12, Laravel Excel 4, dan DomPDF 3. Perbaikan bug: status pembayaran, total dihitung di server, rute status per modul, redirect loop antar peran, transaksi oleh kasir, faktur, import user, serta merapikan sisa template |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Keterbatasan
 
-## License
+Ditulis apa adanya supaya jelas mana yang sudah dan belum dikerjakan:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Halaman **simulasi** hanya berjalan di browser dan menyimpan data di `localStorage`, bukan di database.
+- **Laporan** hanya menampilkan transaksi berstatus "baru" yang sudah dibayar. Filter tanggal belum aktif.
+- **Status transaksi** (proses, selesai, diambil) belum bisa diubah dari aplikasi.
+- **Data belum dipisah per outlet.** Admin dan kasir melihat data semua outlet.
+- Tombol export/import di halaman member **kasir** masih mengarah ke rute admin.
+- **Belum ada automated test** selain contoh bawaan Laravel.
