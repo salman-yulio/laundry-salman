@@ -14,12 +14,12 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Sheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class penjemputanExport implements FromCollection, WithHeadings, WithEvents, WithMapping
+class PenjemputanExport implements FromCollection, WithHeadings, WithEvents, WithMapping
 {
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         return Penjemputan::all();
     }

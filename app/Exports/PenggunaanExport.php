@@ -14,12 +14,12 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Sheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class penggunaanExport implements FromCollection, WithHeadings, WithEvents, WithMapping
+class PenggunaanExport implements FromCollection, WithHeadings, WithEvents, WithMapping
 {
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         return Penggunaan::all();
     }

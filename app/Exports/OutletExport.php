@@ -26,7 +26,7 @@ class OutletExport implements FromCollection, WithHeadings, WithEvents, WithMapp
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         return Outlet::all();
     }

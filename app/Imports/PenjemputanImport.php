@@ -12,7 +12,7 @@ class PenjemputanImport implements ToModel, WithHeadingRow
     /**
     * @param Collection $collection
     */
-    public function model(array $row)
+    public function model(array $row): \Illuminate\Database\Eloquent\Model|array|null
     {
         return new Penjemputan([
             'id_member' => $row['id_member'],

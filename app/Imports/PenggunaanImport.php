@@ -12,7 +12,7 @@ class PenggunaanImport implements ToModel, WithHeadingRow
     /**
      * @param Collection $collection
      */
-    public function model(array $row)
+    public function model(array $row): \Illuminate\Database\Eloquent\Model|array|null
     {
         return new Penggunaan([
             'nama' => $row['nama_barang'],

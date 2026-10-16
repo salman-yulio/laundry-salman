@@ -19,7 +19,7 @@ class AbsensiExport implements FromCollection, WithHeadings, WithEvents, WithMap
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         return absensi::all();
     }

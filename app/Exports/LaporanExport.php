@@ -15,7 +15,7 @@ class LaporanExport implements FromCollection, WithHeadings,  WithEvents, WithMa
      * Method collection untuk mengambil semua data dari database
      * @return \Illuminate\Support\Collection
      */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         return Transaksi::all();
     }

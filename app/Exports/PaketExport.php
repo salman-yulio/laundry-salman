@@ -27,7 +27,7 @@ class PaketExport implements FromCollection, WithHeadings, WithEvents, WithMappi
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         return Paket::all();
     }

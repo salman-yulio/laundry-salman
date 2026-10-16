@@ -19,7 +19,7 @@ class UserExport implements FromCollection, WithHeadings, WithEvents, WithMappin
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function collection()
+    public function collection(): \Illuminate\Support\Enumerable
     {
         return User::all();
     }
